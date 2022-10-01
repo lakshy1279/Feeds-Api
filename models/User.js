@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-    },
+    }
   },
   {
     //The {timestamps: true} option creates a createdAt and updatedAt field on our models that contain timestamps which will get automatically updated when our model changes.

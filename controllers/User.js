@@ -1,5 +1,6 @@
-const User = require("./models/user");
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const Url = require("../models/Url");
 
 module.exports.createSession = async function (req, res) {
   try {
@@ -32,6 +33,7 @@ module.exports.createSession = async function (req, res) {
 module.exports.create = async function (req, res) {
   try {
     console.log("enter");
+    console.log(req.body);
     console.log(JSON.stringify(req.headers));
     if (req.body.password != req.body.confirm_password) {
       return res.json(422, {
@@ -65,3 +67,23 @@ module.exports.create = async function (req, res) {
     });
   }
 };
+
+module.exports.getShortucts = async function(req, res)
+{
+    if(req.params.key == "description")
+    {
+            const result = await Url.find({id:req.user._id}).sort({description:'asc'});
+            return res.status(200).json({
+                message: "Links by sorted order",
+                data: result
+            });
+    }
+    else 
+    {
+        const result = await Url.find({id:req.user._id}).sort({shortlink:'asc'});
+        return res.status(200).json({
+            message: "Links by sorted order",
+            data: result
+        });
+    }
+}
