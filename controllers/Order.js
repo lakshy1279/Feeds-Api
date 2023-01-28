@@ -35,7 +35,7 @@ module.exports.getOrder = async function (req, res) {
       message: "Order fetched Successfully",
       success: true,
       data: {
-          data: newOrder
+          data: newOrder,
       },
     });
   } catch (err) {

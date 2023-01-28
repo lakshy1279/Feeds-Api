@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 //mongoose.set("useCreateIndex", true);
-mongoose.connect("mongodb://localhost:27017/oslash", {
+mongoose.connect("mongodb+srv://nishant007tech:nishanti69@clusterpossibillion.bj440.mongodb.net/TRW?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
