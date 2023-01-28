@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const userSchema = new mongoose.Schema(
   {
-    email: {
+    mobile: {
       type: String,
       required: true,
       unique: true,

@@ -3,13 +3,11 @@ const passport = require("passport");
 const router = express.Router();
 
 const userApi = require("../controllers/User");
-const shortUrl = require("../controllers/Url");
-router.post("/create-session",  userApi.createSession);
-router.post("/signup", userApi.create);
-router.post("/createShortlink",  passport.authenticate("jwt", { session: false }), shortUrl.createShortLink);
-router.get("/search/:key/:value", passport.authenticate("jwt", { session: false }),shortUrl.searchShortlink);
-router.get("/allshortlink/:key", passport.authenticate("jwt", { session: false }), userApi.getShortucts);
-router.delete("/deleteShortLink/:id", passport.authenticate("jwt", { session: false }), shortUrl.deleteShortlink);
+const orderApi = require("../controllers/Order");
+router.post("/login-user",  userApi.createSession);
+router.post("/addUser", userApi.create);
+router.post("/add-order", passport.authenticate("jwt", { session: false }), orderApi.create);
+router.get("/get-order/:userid", passport.authenticate("jwt", { session: false }), orderApi.getOrder);
 
 console.log("router loaded");
 
