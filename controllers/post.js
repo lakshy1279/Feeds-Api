@@ -181,12 +181,75 @@ const getAllposts = async function (req, res) {
         posts: posts,
       },
     });
-  };
+};
+
+const destroy = async function (req, res) {
+  try {
+    let post = await Post.findById(req.params.id);
+    if (post.user == req.user.id) {
+      post.remove();
+      await Comment.deleteMany({ post: req.params.id });
+      //doubt in this why it not work with req.param.id
+      await Like.deleteMany({ likeable: post, onModel: "Post" });
+      //  The $in operator selects the documents where the value of a field equals any value in the specified array.
+      await Like.deleteMany({ _id: { $in: post.comments } });
+      return res.status(200).json({
+        message: "post deleted successfully",
+      });
+    } else {
+      
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+exports.updatePostContent = async (req, res) => {
+  try {
+    const postId = req.params.id; // Assuming the post ID is passed as a route parameter
+    const { content } = req.body; // Assuming the updated content is sent in the request body
+
+    // Find the post by ID
+    const post = await Post.findById(postId);
+
+    // If the post doesn't exist, return an error response
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: 'Post not found',
+      });
+    }
+
+    // Update the content of the post
+    post.content = content;
+    const updatedPost = await post.save();
+
+    // Return a success response with the updated post
+    return res.status(200).json({
+      success: true,
+      message: 'Post content updated',
+      data: {
+        post: updatedPost,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+};
 
 module.exports = {
     getPostById,
     getPostsByAuthor,
     create,
     getAllposts,
+    destroy,
     upload
 };
