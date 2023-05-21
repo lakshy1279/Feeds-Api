@@ -6,9 +6,8 @@ const cors = require("cors");
 const passportJWT = require("./config/passport-jwt");
 const path = require("path");
 app.use(cors());
+app.use(express.urlencoded());
 app.use(express.json());
-const buildPath = path.join(__dirname, "/build");
-app.use(express.static(buildPath));
 app.get("/", function(req,res)
 {
   res.sendFile(path.join(__dirname, "/build/index.html"),

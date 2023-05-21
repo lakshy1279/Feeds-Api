@@ -1,14 +1,13 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const Url = require("../models/order");
 const bcrypt = require("bcrypt");
 
 module.exports.createSession = async function (req, res) {
   try {
-    let user = await User.findOne({ mobile: req.body.mobile });
+    let user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.json(422, {
-        message: "Invalid mobile no",
+        message: "Invalid email",
       });
     }
     bcrypt.compare(req.body.password, user.password, function(err, result) {
@@ -18,7 +17,7 @@ module.exports.createSession = async function (req, res) {
                 token: jwt.sign(user.toJSON(), "biet"),
                 user: {
                   name: user.name,
-                  mobile: user.mobile,
+                  email: user.email,
                   id: user._id,
                 },
               },
@@ -48,14 +47,14 @@ module.exports.create = async function (req, res) {
         message: "password not matched",
       });
     }
-    let user = await User.findOne({ mobile: req.body.mobile });
+    let user = await User.findOne({ email: req.body.email });
     if (user) {
       return res.json(422, {
         message: "user already exist",
       });
     }
     let userData = {};
-    userData.mobile = req.body.mobile;
+    userData.email = req.body.email;
     userData.name = req.body.name;
     bcrypt.hash(req.body.password, 10, async function(err, hash) {
           if(err)
@@ -74,7 +73,7 @@ module.exports.create = async function (req, res) {
             token: jwt.sign(newUser.toJSON(), "biet"),
             user: {
               name: newUser.name,
-              mobile: newUser.mobile,
+              email: newUser.email,
               _id: newUser._id,
             },
           },
