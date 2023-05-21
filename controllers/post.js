@@ -208,7 +208,7 @@ const destroy = async function (req, res) {
   }
 };
 
-exports.updatePostContent = async (req, res) => {
+const updatePostContent = async (req, res) => {
   try {
     const postId = req.params.id; // Assuming the post ID is passed as a route parameter
     const { content } = req.body; // Assuming the updated content is sent in the request body
@@ -251,5 +251,6 @@ module.exports = {
     create,
     getAllposts,
     destroy,
+    updatePostContent,
     upload
 };
